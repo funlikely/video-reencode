@@ -12,6 +12,7 @@ def read_config(file_path='H:\\streaming-dvr\\config.ini'):
 
 
 def run_ffmpeg_with_cpu_affinity_and_priority(ffmpeg_command, cpu_affinity):
+
     # Read configuration from the file each time we start a new ffmpeg command
     affinity_list = get_affinity_list()
     print(f'Affinity list: {affinity_list}')
