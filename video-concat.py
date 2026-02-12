@@ -19,11 +19,11 @@ import sys
 
 # ===== CONFIG =====
 CONFIG_FILE = "video-concat.config"
-OUTPUT_FILE = "output3.mp4"
-TARGET_WIDTH = 1504
-TARGET_HEIGHT = 832
-# TARGET_WIDTH = 928
-# TARGET_HEIGHT = 1376
+OUTPUT_FILE = "output5.mp4"
+# TARGET_WIDTH = 1504
+# TARGET_HEIGHT = 832
+TARGET_WIDTH = 928
+TARGET_HEIGHT = 1376
 # ==================
 
 
@@ -68,6 +68,8 @@ def get_video_resolution(path):
 def collect_videos(directories):
     videos = []
     for directory in directories:
+
+        print(f"Processing directory {directory}")
         for root, _, files in os.walk(directory):
             for f in files:
                 if f.lower().endswith(".mp4"):
@@ -88,12 +90,17 @@ def main():
 
     random.shuffle(videos)
 
+    print(f"video count: {len(videos)}")
+
     # Create concat file
     with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as f:
         concat_file = f.name
         for v in videos:
-            escaped = v.replace("'", "'\\''")
-            f.write(f"file '{escaped}'\n")
+            try:
+                escaped = v.replace("'", "'\\''")
+                f.write(f"file '{escaped}'\n")
+            except UnicodeEncodeError:
+                print(f"UnicodeEncodeError")
 
     # ffmpeg command
     cmd = [
